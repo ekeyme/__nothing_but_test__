@@ -26,6 +26,7 @@ SCORE_MATIX = {'Y': 8.0,
                'aa_pm': -1.0, 
                'nt_pm': -0.2
               }
+MAX_BASE = 10000000
 
 
 class Y(object):
@@ -51,43 +52,44 @@ class NA(object):
     
     __status__ = "NA"
 
-    def __init__(self, seq, stdseq, pattern):
+    def __init__(self, seq, stdseq, pattern=None, gaps=0, nt_pm=0, aa_pm=0):
         """
         
         Args:
         seq -- sequence
         stdseq -- pairwised standar sequence of seq
         pattern -- pattern object
+        gaps --
+        nt_pm --
+        aa_pm --
 
         """
-        self.length = len(seq)
-        if self.length != len(stdseq):
-            raise ValueError("inconsistent length between seq and stdseq")
+
         self.seq = seq
         self.stdseq = stdseq
+        self.length = len(seq)
         self.pattern = pattern
-        self.gaps = 0
-        self.nt_pm = 0
-        for stdv, v in pattern.mutants.values():
-            if stdv + v == "--":
-                raise ValueError("std_variant and variant in nucleotide "
-                                 "mutants cannot be gap tag '-' at the same "
-                                 "time")
-
-            if stdv != '-' and v != '-':
-                self.nt_pm += 1
-            else:
-                self.gaps += 1
-        assert self.gaps == stdseq.count("-") + seq.count("-"), \
-                "inconsistent gaps number between sequence and pattern."
-        self.aa_pm = len([None for stdv, v in pattern.aa_mutants.values() 
-                               if stdv != '-' and v != '-' and stdv != v])
+        self.gaps = gaps
+        self.nt_pm = nt_pm
+        self.aa_pm = aa_pm
+        if self.length > MAX_BASE:
+            raise ValueError("length must not be greater than {}".format(
+                    MAX_BASE))
+        self.score = self._score()
 
     def __str__(self):
         """Convert to string."""
 
         return self.__status__
 
+    def _score(self):
+        """Calculate score of this status"""
+
+        score = SCORE_MATIX[self.__status__] \
+                + SCORE_MATIX['gaps'] * self.gaps \
+                + SCORE_MATIX['nt_pm'] * self.nt_pm / MAX_BASE \
+                + SCORE_MATIX['aa_pm'] * self.aa_pm / MAX_BASE
+        return score
 
 
 def str_to_status_obj(s):

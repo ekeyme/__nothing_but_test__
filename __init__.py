@@ -7,11 +7,11 @@ analyze
 
 """
 
-import mutpattern
+from .pattern import parse
 from .status import Y, Conserved, PM_IN_DB, Codon_optimized, PM, Null
 
 
-def analyze(seq, stdseq, pm_in_db_func=None):
+def analyze(seq, stdseq):
     """Analyze the PM between pairwised seq and stdseq.
 
     Analyze the consistence of nucleotide base between a sequence and it's
@@ -23,17 +23,31 @@ def analyze(seq, stdseq, pm_in_db_func=None):
     Args:
     seq -- nucleotide sequence
     stdseq -- glable pairwised standard sequence of seq
-    pm_in_db_func -- a function to determine whether a PM-containing clone 
-                     is PM_IN_DB. The function will be fed following 
-                     key-word arguments:
-                        seq: sequenct
-                        stdseq: standard sequence of seq
-                        gaps: alignment gaps
-                        nt_pm: number of mismatched nucleotide base
-                        aa_pm: number of mismatched amino
-                        pattern: mutpattern object
 
     """
+        
+    self.length = len(seq)
+    if self.length != len(stdseq):
+        raise ValueError("inconsistent length between seq and stdseq")
+    self.seq = seq
+    self.stdseq = stdseq
+    self.pattern = pattern
+    self.gaps = 0
+    self.nt_pm = 0
+    for stdv, v in pattern.mutants.values():
+        if stdv + v == "--":
+            raise ValueError("std_variant and variant in nucleotide "
+                             "mutants cannot be gap tag '-' at the same "
+                             "time")
+
+        if stdv != '-' and v != '-':
+            self.nt_pm += 1
+        else:
+            self.gaps += 1
+    assert self.gaps == stdseq.count("-") + seq.count("-"), \
+            "inconsistent gaps number between sequence and pattern."
+    self.aa_pm = len([None for stdv, v in pattern.aa_mutants.values() 
+                           if stdv + v != "--" and stdv != v])
 
 
 
