@@ -54,11 +54,11 @@ def parse(seq, stdseq, translate=False):
 
     seq_len = len(seq)
     if seq_len == 0:
-        raise ValueError("empty sequence for seq")
+        raise KeyError("empty sequence for seq")
     if seq_len != len(stdseq):
-        raise ValueError("inconsistent length between seq and stdseq")
+        raise KeyError("inconsistent length between seq and stdseq")
     if translate and seq_len % 3 != 0:
-        raise ValueError("sequence length must be triple in translate model")
+        raise KeyError("sequence length must be triple in translate model")
 
     seq = seq.upper()
     stdseq = stdseq.upper()

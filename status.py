@@ -55,8 +55,8 @@ class NA(object):
 
         """
 
-        self.parwised_seq = seq
-        self.parwised_stdseq = stdseq
+        self.pairwised_seq = seq
+        self.pairwised_stdseq = stdseq
         self.seq = None if seq is None else seq.replace('-', '')
         self.stdseq = None if stdseq is None else stdseq.replace('-', '')
         self.length = length
@@ -114,7 +114,23 @@ class NA(object):
     def _is_valid_operand(self, other):
         """Check"""
 
-        return isinstance(other, NA)
+        if isinstance(other, NA):
+            std = None if self.stdseq is None else self.stdseq.upper()
+            other_std = None if other.stdseq is None else other.stdseq.upper()
+            if other_std != std:
+                raise TypeError("unorderable when stdseqs are inconsistent.")
+            return True
+
+        return False
+
+    def __repr__(self):
+        if self.stdseq is not None and len(self.stdseq) > 60:
+            s = self.stdseq[0:27] + "..." + self.stdseq[-27:]
+        else:
+            s = self.seq
+        return "<pm.status.{} object with: gaps={}, nt_pm={}, aa_pm={}, " \
+               "stdseq='{}'>".format(self.__status__, self.gaps, 
+                                  self.nt_pm, self.aa_pm, s)
 
 
 class Y(NA):

@@ -60,5 +60,14 @@ class RoutineTest(unittest.TestCase):
             self.assertEqual(str(status), str_status)
 
 
+class ErrorTest(unittest.TestCase):
+
+    def test_raise_TypeError(self):
+        """status should raise TypeError when comparing between status operand with difference stdandar sequence"""
+
+        with self.assertRaises(TypeError):
+            Y(stdseq='atg') > Conserved(stdseq='tga') > PM(stdseq='aaa') > NA(stdseq='tgg')
+
+
 if __name__ == '__main__':
     unittest.main()

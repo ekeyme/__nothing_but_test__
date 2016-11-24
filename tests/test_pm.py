@@ -19,7 +19,7 @@ class RoutineTest(unittest.TestCase):
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGTT'
 
         status = analyze(seq, stdseq)
-        self.assertEqual(status, Y())
+        self.assertEqual(status, Y(stdseq=stdseq))
         self.assertEqual(status.seq, seq)
         self.assertEqual(status.stdseq, stdseq)
         self.assertEqual(status.gaps, 0)
@@ -35,7 +35,7 @@ class RoutineTest(unittest.TestCase):
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGCC'
 
         status = analyze(seq, stdseq)
-        self.assertEqual(status, Conserved(nt_pm=1))
+        self.assertEqual(status, Conserved(nt_pm=1, stdseq=stdseq))
         self.assertEqual(status.seq, seq)
         self.assertEqual(status.stdseq, stdseq)
         self.assertEqual(status.gaps, 0)
@@ -51,7 +51,7 @@ class RoutineTest(unittest.TestCase):
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAAACT'
 
         status = analyze(seq, stdseq)
-        self.assertEqual(status, PM(nt_pm=1, aa_pm=1))
+        self.assertEqual(status, PM(nt_pm=1, aa_pm=1, stdseq=stdseq))
         self.assertEqual(status.seq, seq)
         self.assertEqual(status.stdseq, stdseq)
         self.assertEqual(status.gaps, 0)
@@ -67,7 +67,7 @@ class RoutineTest(unittest.TestCase):
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGTT'
 
         status = analyze(seq, stdseq)
-        self.assertEqual(status, NA(gaps=1))
+        self.assertEqual(status, NA(gaps=1, stdseq=stdseq))
         self.assertEqual(status.seq, seq.replace('-', ''))
         self.assertEqual(status.stdseq, stdseq)
         self.assertEqual(status.gaps, 1)
