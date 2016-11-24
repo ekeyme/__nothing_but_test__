@@ -4,47 +4,77 @@
 
 import fulenbin
 import unittest
-from pmanalyzer import NuclPmAnalyzer, pmstatus
+from pm import analyze
+from pm.status import Y, Conserved, PM, NA
+from pm.pattern import TranslatedPattern
 
 
 class RoutineTest(unittest.TestCase):
     """RoutineTest"""
 
-    def test_nucl_analyze_with_Y(self):
-        """NuclPmAnalyzer.analyze should give the expection value"""
+    def test_analyze_with_Y(self):
+        """pm.analyze should give the expection value"""
 
-        pmanalyzer = NuclPmAnalyzer()
         seq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGTT'
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGTT'
-        ex_pm_status = pmstatus.Y
 
-        pm_status, pattern = pmanalyzer.analyze(seq, stdseq)
-        self.assertEqual(pm_status, ex_pm_status)
-        self.assertIs(pattern, None)
+        status = analyze(seq, stdseq)
+        self.assertEqual(status, Y())
+        self.assertEqual(status.seq, seq)
+        self.assertEqual(status.stdseq, stdseq)
+        self.assertEqual(status.gaps, 0)
+        self.assertEqual(status.length, len(seq))
+        self.assertEqual(status.nt_pm, 0)
+        self.assertEqual(status.aa_pm, 0)
+        self.assertIsInstance(status.pattern, TranslatedPattern)
 
-    def test_nucl_analyze_with_Conserved(self):
-        """NuclPmAnalyzer.analyze should give the expection value"""
+    def test_analyze_with_Conserved(self):
+        """pm.analyze should give the expection value"""
 
-        pmanalyzer = NuclPmAnalyzer()
         seq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGCT'
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGCC'
-        ex_pm_status = pmstatus.Conserved
 
-        pm_status, pattern = pmanalyzer.analyze(seq, stdseq)
-        self.assertEqual(pm_status, ex_pm_status)
-        self.assertIs(pattern, None)
+        status = analyze(seq, stdseq)
+        self.assertEqual(status, Conserved(nt_pm=1))
+        self.assertEqual(status.seq, seq)
+        self.assertEqual(status.stdseq, stdseq)
+        self.assertEqual(status.gaps, 0)
+        self.assertEqual(status.length, len(seq))
+        self.assertEqual(status.nt_pm, 1)
+        self.assertEqual(status.aa_pm, 0)
+        self.assertIsInstance(status.pattern, TranslatedPattern)
 
-    def test_nucl_analyze_with_PM(self):
-        """NuclPmAnalyzer.analyze should give the expection value"""
+    def test_analyze_with_PM(self):
+        """pm.analyze should give the expection value"""
 
-        pmanalyzer = NuclPmAnalyzer()
         seq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCT'
         stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAAACT'
-        ex_pm_status = pmstatus.PM
 
-        pm_status, pattern = pmanalyzer.analyze(seq, stdseq)
-        self.assertEqual(pm_status, ex_pm_status)
-        self.assertIs(pattern, None)
+        status = analyze(seq, stdseq)
+        self.assertEqual(status, PM(nt_pm=1, aa_pm=1))
+        self.assertEqual(status.seq, seq)
+        self.assertEqual(status.stdseq, stdseq)
+        self.assertEqual(status.gaps, 0)
+        self.assertEqual(status.length, len(seq))
+        self.assertEqual(status.nt_pm, 1)
+        self.assertEqual(status.aa_pm, 1)
+        self.assertIsInstance(status.pattern, TranslatedPattern)
+
+    def test_analyze_with_Y(self):
+        """pm.analyze should give the expection value"""
+
+        seq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGC-TT'
+        stdseq = 'ATGTCGTTCTGCAGCTTCTTCGGGGGCGAGGTTTTCCAGAATCACTTTGAACCTGGCGTT'
+
+        status = analyze(seq, stdseq)
+        self.assertEqual(status, NA(gaps=1))
+        self.assertEqual(status.seq, seq.replace('-', ''))
+        self.assertEqual(status.stdseq, stdseq)
+        self.assertEqual(status.gaps, 1)
+        self.assertEqual(status.length, len(seq))
+        self.assertEqual(status.nt_pm, 0)
+        self.assertEqual(status.aa_pm, 0)
+        self.assertIsInstance(status.pattern, TranslatedPattern)
 
 
 if __name__ == '__main__':

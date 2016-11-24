@@ -56,8 +56,7 @@ def parse(seq, stdseq, translate=False):
     if seq_len == 0:
         raise ValueError("empty sequence for seq")
     if seq_len != len(stdseq):
-        raise ValueError("length must be consistent between seq and standard "
-                        "seq")
+        raise ValueError("inconsistent length between seq and stdseq")
     if translate and seq_len % 3 != 0:
         raise ValueError("sequence length must be triple in translate model")
 
@@ -72,6 +71,8 @@ def parse(seq, stdseq, translate=False):
     if not translate:
         return PlainPattern(nt_mutants)
 
+    if not nt_mutants:
+        return TranslatedPattern(nt_mutants, OrderedDict(), {})
     aa_mutants, assoc_dict = _make_translate_mutants(seq, stdseq, nt_mutants)
     return TranslatedPattern(nt_mutants, aa_mutants, assoc_dict)
 
