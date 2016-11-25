@@ -11,12 +11,13 @@ PlainPattern(mutants)
 TranslatedPattern(nt_mutants, aa_mutants, assoc_dict)
 
 Exceptions:
-TranslateError
+TranslationError
 
 """
 
 from collections import OrderedDict
 from Bio.Data import CodonTable
+from Bio.Data.CodonTable import TranslationError
 import fulenbin
 from seqtool import is_stop_codon
 
@@ -91,13 +92,13 @@ def _make_translate_mutants(seq, stdseq, nt_mutant):
             try:
                 aa = _translate_codon(codon)
             except KeyError:
-                raise TranslateError("invalid codon in seq: {}".format(codon))
+                raise TranslationError("invalid codon in seq: {}".format(codon))
             # translate codon in standard sequence
             stdcodon = stdseq[start:stop]
             try:
                 std_aa = _translate_codon(stdcodon)
             except KeyError:
-                raise TranslateError("invalid codon in standard sequence: "
+                raise TranslationError("invalid codon in standard sequence: "
                                      "{}".format(stdcodon))
 
             aa_mutant[aa_pos] = (std_aa, aa)
@@ -254,10 +255,4 @@ class PlainPattern(object):
         return self._list
 
 
-class TranslateError(ValueError):
-    """Translation error"""
-
-    pass
-
-
-__all__ = (parse, )
+__all__ = (parse, TranslationError, )

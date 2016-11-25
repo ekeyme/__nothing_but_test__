@@ -70,14 +70,14 @@ class RoutineTestForFuncs(unittest.TestCase):
 class ErrorTestFor_parse(unittest.TestCase):
 
     def test_parse_with_bar_in_seq(self):
-        """parse with translate=True should raise TranslateError when seq or stdseq 
+        """parse with translate=True should raise TranslationError when seq or stdseq 
         contains untranslatable codon(except the gaps identifer '-')"""
 
-        from pm.pattern import TranslateError
+        from pm.pattern import TranslationError
 
         stdseq = "ATGACAAGGGTTUUGTAGTAC"
         seq = "ACGCCAAGGGTTUUATACTAP"
-        with self.assertRaises(TranslateError):
+        with self.assertRaises(TranslationError):
             parse(seq, stdseq, True)
 
 
