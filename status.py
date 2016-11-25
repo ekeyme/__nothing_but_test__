@@ -3,7 +3,7 @@
 PM status data structure module.
 
 Provides a orderable data structure for point mutation status. 
-e.g. Y > Conserved is True.
+e.g. Y > Conserved is True; Y(aa_pm=0) > Y(aa_pm=None) is True.
 
 Class:
 
@@ -41,17 +41,25 @@ class NA(object):
     
     __status__ = "NA"
 
-    def __init__(self, seq=None, stdseq=None, pattern=None, length=0, gaps=0, nt_pm=0, aa_pm=0):
+    def __init__(self, seq=None, stdseq=None, pattern=None, length=0, gaps=0, nt_pm=0, aa_pm=None):
         """
         
         Args:
+
         seq -- sequence
+
         stdseq -- pairwised standar sequence of seq
+
         pattern -- pattern object
+
         length --
+
         gaps --
+
         nt_pm --
-        aa_pm --
+
+        aa_pm -- amino mutation amount. If in a translating model, 
+                 aa_pm will be an valid int, else None
 
         """
 
@@ -75,10 +83,11 @@ class NA(object):
         """Calculate score of this status"""
 
         gap = 1 if self.gaps > 0 else 0
+        aa_pm = MAX_BASE if self.aa_pm is None else self.aa_pm
         score = SCORE_MATIX[self.__status__] \
                 + SCORE_MATIX['gaps'] * gap \
                 + SCORE_MATIX['nt_pm'] * self.nt_pm / MAX_BASE \
-                + SCORE_MATIX['aa_pm'] * self.aa_pm / MAX_BASE
+                + SCORE_MATIX['aa_pm'] * aa_pm / MAX_BASE
         return score
 
     def __eq__(self, other):
@@ -141,6 +150,10 @@ class Y(NA):
 class Conserved(NA):
     
     __status__ = "Conserved"
+
+    def __init__(self, *args, **kwargs):
+        super(Conserved, self).__init__(*args, **kwargs)
+        assert self.aa_pm == 0, "aa_pm > 0 in Conserved."
 
 
 class PM(NA):
