@@ -111,7 +111,7 @@ def _make_translate_mutants(seq, stdseq, nt_mutant):
 
 
 def _translate_codon(codon):
-    """used by _make_translate_mutant_list"""
+    """used by _make_translate_mutants"""
 
     if is_stop_codon(codon):
         return '*'
