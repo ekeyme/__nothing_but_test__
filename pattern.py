@@ -6,12 +6,15 @@ Functions:
 parse(seq, stdseq, translate=False)
 mutant_to_str(pos, stdvariant, variant)
 
-Classes:
+Class:
+
 PlainPattern(mutants)
 TranslatedPattern(nt_mutants, aa_mutants, assoc_dict)
 
-Exceptions:
+Exception:
+
 TranslationError
+Raise when invalid codon found in seq or stdseq in translation model
 
 """
 

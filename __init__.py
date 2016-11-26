@@ -5,9 +5,15 @@ Analyze PM status for nucleotide sequence.
 Functions:
 analyze
 
+Exception:
+
+TranslationError
+Raise when invalid codon found in seq or stdseq in translation model.
+Referenced from pm.status.
+
 """
 
-from .pattern import parse
+from .pattern import parse, TranslationError
 from .status import Y, Conserved, PM, NA
 
 
@@ -71,4 +77,4 @@ def analyze(seq, stdseq, translate=True):
         return PM(seq, stdseq, pattern=pattern, length=length, 
                   gaps=gaps, nt_pm=nt_pm, aa_pm=aa_pm)
 
-__all__ = (analyze, )
+__all__ = (analyze, TranslationError, )
