@@ -21,8 +21,6 @@ Raise when invalid codon found in seq or stdseq in translation model
 from collections import OrderedDict
 from Bio.Data import CodonTable
 from Bio.Data.CodonTable import TranslationError
-import fulenbin
-from seqtool import is_stop_codon
 
 
 # Translate table, used by _translate_codon
@@ -110,10 +108,23 @@ def _make_translate_mutants(seq, stdseq, nt_mutant):
     return (aa_mutant, nt_pos2aa_assoc_dict)
 
 
+def _is_stop_codon(codon):
+    '''Where is a codon stop codon?'''
+
+    if len(codon.strip()) != 3:
+        raise ValueError('codon must be triple')
+
+    codon = codon.upper()
+    if codon in ('TAA', 'TGA', 'TAG', 'UAA', 'UGA', 'UAG'):
+        return True
+    else:
+        return False
+
+
 def _translate_codon(codon):
     """used by _make_translate_mutants"""
 
-    if is_stop_codon(codon):
+    if _is_stop_codon(codon):
         return '*'
     if '-' in codon:
         return '-'

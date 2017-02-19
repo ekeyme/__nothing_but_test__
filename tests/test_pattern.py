@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Unit test for mutpattern"""
+"""Unit test for pattern"""
 
-import fulenbin
 from pm.pattern import (parse, mutant_to_str, PlainPattern, TranslatedPattern)
 import unittest
 

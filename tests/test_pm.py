@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Unit test for pma."""
+"""Unit test for pm."""
 
-import fulenbin
 import unittest
 from pm import analyze
 from pm.status import Y, Conserved, PM, NA
