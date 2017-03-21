@@ -13,7 +13,7 @@ Referenced from pm.status.
 
 """
 
-__version__ = '1.1.0b1'
+__version__ = '1.1.0b2'
 
 
 from .pattern import parse, TranslationError
