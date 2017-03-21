@@ -3,6 +3,14 @@ A Python3 point mutation pattern analyzing tool for nucleotide sequence.
 
 ## Installation
 
+Use pip(recommended):
+
+```
+pip install bio-pm
+```
+
+OR
+
 ```
 pip install biopython  #  required
 python3 setup.py install
@@ -15,7 +23,6 @@ Feed your pairwised seq and stdseq into `pm.analyze`, it will return you the cor
 
 ```python
 >>> import pm
->>> from pm.pattern import mutant_to_str
 >>> 
 >>> stdseq = "ATGGGCGCT"
 >>> seq_without_pm = 'ATGGGCGCT'
