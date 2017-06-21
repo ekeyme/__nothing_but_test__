@@ -224,8 +224,8 @@ class TranslatedPattern(object):
             self._list = []
             for nt_pos in self.mutants:
                 aa_pos = self.assoc_dict[nt_pos]
-                nt_item = (nt_pos, *self.mutants[nt_pos])
-                aa_item = (aa_pos, *self.aa_mutants[aa_pos])
+                nt_item = (nt_pos,) + self.mutants[nt_pos]
+                aa_item = (aa_pos,) + self.aa_mutants[aa_pos]
                 self._list.append((nt_item, aa_item))
         return self._list
 
@@ -265,7 +265,7 @@ class PlainPattern(object):
         if self._list is None:
             self._list = []
             for nt_pos in self.mutants:
-                self._list.append((nt_pos, *self.mutants[nt_pos]))
+                self._list.append((nt_pos,)+self.mutants[nt_pos])
         return self._list
 
 
