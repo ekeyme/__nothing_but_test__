@@ -13,8 +13,6 @@ Referenced from pm.status.
 
 """
 
-__version__ = '1.1.0b3'
-
 
 from .pattern import parse, TranslationError
 from .status import Y, Conserved, PM, NA

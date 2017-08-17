@@ -1,9 +1,8 @@
 from setuptools import setup
-from pm import __version__ 
 
 setup(
     name = "bio-pm",
-    version = __version__,
+    version = '1.1.0b5',
     url = "https://github.com/ekeyme/bio-pm",
     license = "MIT",
     author = "Ekeyme Mo",
@@ -11,13 +10,13 @@ setup(
     description = "point mutation pattern analyzing tool for nucleotide sequence",
     keywords = 'python3 point mutation analyzing tool',
     packages = ["pm", ],
-    platforms = "any",
     install_requires = ['biopython', ],
     classifiers= [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3 :: Only",
     ]
 )

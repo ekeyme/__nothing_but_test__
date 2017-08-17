@@ -19,13 +19,8 @@ Raise when invalid codon found in seq or stdseq in translation model
 """
 
 from collections import OrderedDict
-from Bio.Data import CodonTable
+from Bio.Seq import translate
 from Bio.Data.CodonTable import TranslationError
-
-
-# Translate table, used by _translate_codon
-translate_table = CodonTable.ambiguous_generic_by_name["Standard"]. \
-                    forward_table
 
 
 def parse(seq, stdseq, translate=False):
@@ -90,17 +85,11 @@ def _make_translate_mutants(seq, stdseq, nt_mutant):
         if aa_pos != previous_aa_pos:
             # translate codon in seq
             codon = seq[start:stop]
-            try:
-                aa = _translate_codon(codon)
-            except KeyError:
-                raise TranslationError("invalid codon in seq: {}".format(codon))
+            aa = _translate_codon(codon)
+
             # translate codon in standard sequence
             stdcodon = stdseq[start:stop]
-            try:
-                std_aa = _translate_codon(stdcodon)
-            except KeyError:
-                raise TranslationError("invalid codon in standard sequence: "
-                                     "{}".format(stdcodon))
+            std_aa = _translate_codon(stdcodon)
 
             aa_mutant[aa_pos] = (std_aa, aa)
         previous_aa_pos = aa_pos
@@ -124,11 +113,9 @@ def _is_stop_codon(codon):
 def _translate_codon(codon):
     """used by _make_translate_mutants"""
 
-    if _is_stop_codon(codon):
-        return '*'
     if '-' in codon:
         return '-'
-    return translate_table[codon]
+    return translate(codon)
 
 
 def _codon_slicing(nt_pos):
