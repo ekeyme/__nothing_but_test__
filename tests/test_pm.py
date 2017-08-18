@@ -6,7 +6,6 @@ import sys
 import unittest
 from os.path import dirname, realpath
 
-sys.path.append(dirname(dirname(realpath(__file__))))
 from pm import analyze
 from pm.status import Y, Conserved, PM, NA
 from pm.pattern import TranslatedPattern, PlainPattern

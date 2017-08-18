@@ -6,7 +6,6 @@ import sys
 import unittest
 from os.path import dirname, realpath
 
-sys.path.append(dirname(dirname(realpath(__file__))))
 from pm.pattern import (parse, mutant_to_str, PlainPattern, TranslatedPattern)
 
 

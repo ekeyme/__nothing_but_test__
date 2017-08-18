@@ -1,65 +1,59 @@
-Bio-pm
+bio-pm
 ======
 
-A Python3 point mutation pattern analyzing tool for nucleotide sequence.
+.. image:: https://img.shields.io/pypi/v/bio-pm.svg
+    :target: https://pypi.python.org/pypi/bio-pm
+    :alt: Latest PyPI version
+
+.. image:: https://travis-ci.org/ekeyme/bio-pm.png
+   :target: https://travis-ci.org/ekeyme/bio-pm
+   :alt: Latest Travis CI build status
+
+A point mutation analyzing tool for nucleotide sequence
 
 Installation
 ------------
 
-Use pip(recommended):
-
-::
+Install through pip::
 
     pip install bio-pm
 
-OR
+Or manually (assuming all required modules are installed on your system)::
 
-::
+    python ./setup.py install
 
-    pip install biopython  #  required
-    python3 setup.py install
+
+Requirements
+^^^^^^^^^^^^
+
+* Python >= 3
+* biopython
 
 Examples
 --------
 
 Analyze point mutation status using ``pm.analyze(seq, stdseq, translate=True)``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Feed your pairwised seq and stdseq into ``pm.analyze``, it will return
-you the correct point mutation status object.
-
-.. code:: python
+.. code-block:: python
 
     >>> import pm
-    >>> 
-    >>> stdseq = "ATGGGCGCT"
-    >>> seq_without_pm = 'ATGGGCGCT'
-    >>> pm.analyze(seq_without_pm, stdseq)
-    <pm.status.Y object with: gaps=0, nt_pm=0, aa_pm=0, stdseq='ATGGGCGCT'>
-    >>> 
-    >>> seq_conserved = "ATGGGCGCC"
-    >>> pm.analyze(seq_conserved, stdseq)
-    <pm.status.Conserved object with: gaps=0, nt_pm=1, aa_pm=0, stdseq='ATGGGCGCC'>
-    >>> 
-    >>> seq_with_pm = 'ATGGGCGAT'
-    >>> pm.analyze(seq_with_pm, stdseq)
-    <pm.status.PM object with: gaps=0, nt_pm=1, aa_pm=1, stdseq='ATGGGCGAT'>
     >>> 
     >>> seq_with_gap = 'ATGGGCG-C'
     >>> pm.analyze(seq_with_gap, stdseq)
     <pm.status.NA object with: gaps=1, nt_pm=1, aa_pm=0, stdseq='ATGGGCGC'>
     >>> 
 
-Quickly compare the point mutation status objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Quickly compare between ``pm.status`` objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Point mutation status objects have its internal order, Y > Conserved >
-PM > NA, when the stdseq is the same. So you can quickly do comparing
-between them.
+``p.status`` objects with same stdseqs have their internal order. That is ``Y > Conserved >
+PM > NA``.
 
-.. code:: python
+.. code-block:: python
 
     >>> import pm
+    >>>
     >>> stdseq = "ATGGGCGCT"
     >>> seq_without_pm = 'ATGGGCGCT'
     >>> seq_conserved = "ATGGGCGCC"
@@ -67,32 +61,34 @@ between them.
     >>> status_Y = pm.analyze(seq_without_pm, stdseq)
     >>> status_Conserved = pm.analyze(seq_conserved, stdseq)
     >>> status_PM = pm.analyze(seq_with_pm, stdseq)
+    >>>
     >>> status_Y > status_Conserved > status_PM
     True
-    >>> sorted([status_PM, status_Y], reverse=True)
-    [<pm.status.Y object with: gaps=0, nt_pm=0, aa_pm=0, stdseq='ATGGGCGCT'>, <pm.status.PM object with: gaps=0, nt_pm=1, aa_pm=1, stdseq='ATGGGCGAT'>]
     >>>
 
-Generate HGVS-like mutation format basing on mutant patterns
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Help generate HGVS-like mutation format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Continues from ``Quickly compare the point mutation status objects``
+*Codes continues from* ``Quickly compare the point mutation status objects``
 
-.. code:: python
+.. code-block:: python
 
     >>> from pm.pattern import mutant_to_str
-    >>> status_PM
-    <pm.status.PM object with: gaps=0, nt_pm=1, aa_pm=1, stdseq='ATGGGCGAT'>
+    >>>
     >>> status_PM.pattern
     <pm.pattern.TranslatedPattern object at 0x2b03c9cfdc18>
-    >>> status_PM.pattern.list()
-    [((8, 'C', 'A'), (3, 'A', 'D'))]
+    >>>
     >>> for nt_pm, aa_pm in status_PM.pattern.list():
     ...     print(mutant_to_str(*nt_pm) + '|' + mutant_to_str(*aa_pm))
     ...
     8C>A|3A>D
 
-License
+Licence
 -------
 
-MIT
+MIT licensed. See the bundled `LICENSE <https://github.com/ekeyme/bio-pm/blob/master/LICENSE>`_ file for more details.
+
+Authors
+-------
+
+`bio-pm` was written by `Ekeyme Mo <ekeyme@gmail.com>`_.
