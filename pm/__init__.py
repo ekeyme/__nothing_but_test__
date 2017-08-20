@@ -32,15 +32,9 @@ def analyze(seq, stdseq, translate=True):
 
     stdseq -- glable pairwised standard sequence of seq
 
-    translate -- open translate model, default True.
-                 If translate is true, the aligned clones with non-triple 
-                 pairwised sequence, produced by blastn, of query(in seqfa) 
-                 will be omit. The returned status would be Y/Conserved/PM/NA
-                 status object of which aa_pm is not None.
-
-                 If translate is false, any aligned clone meet the filtering 
-                 requirement of the `filterfn` will be included. The returned
-                 status object would be Y/NA of which aa_pm is None.
+    translate -- active translate model, default True. NOTE: if translate 
+                 mode is actived, an exception TranslationError might raise
+                 when invalid codon occurs.
 
     """
         

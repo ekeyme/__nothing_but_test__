@@ -5,6 +5,12 @@ PM status data structure module.
 Provides a orderable data structure for point mutation status. 
 e.g. Y > Conserved is True; Y(aa_pm=0) > Y(aa_pm=None) is True.
 
+NOTE:
+    PM status objects with inconsistent stdseq are not orderable,
+    and it regards sequences which gaps, '-', has been removed from
+    the orignal stdseq as the stdseq to compare. So status with 
+    stdseq='ATG-AAT' and status with stdseq='ATGAAT' is comparable.
+
 Class:
 
 Y
@@ -48,31 +54,30 @@ class NA(object):
 
         seq -- sequence
 
-        stdseq -- pairwised standar sequence of seq
+        stdseq -- standar sequence(might be gaps contained)
 
-        pattern -- pattern object
+        pattern -- pattern object, see pm.pattern
 
-        length --
+        length -- length of pairwised seq and stdseq
 
-        gaps --
+        gaps -- nucleotide gaps number
 
-        nt_pm --
+        nt_pm -- nucleotide mutation amout
 
         aa_pm -- amino mutation amount. If in a translating model, 
                  aa_pm will be an valid int, else None
 
         """
 
-        self.pairwised_seq = seq
-        self.pairwised_stdseq = stdseq
-        self.seq = None if seq is None else seq.replace('-', '')
-        self.stdseq = None if stdseq is None else stdseq.replace('-', '')
+        self.seq = seq
+        self.stdseq = stdseq
         self.length = length
         self.pattern = pattern
         self.gaps = gaps
         self.nt_pm = nt_pm
         self.aa_pm = aa_pm
         self.score = self._score()
+        self._cached_non_gaps_stdseq = None
 
     def __str__(self):
         """Convert to string."""
@@ -120,13 +125,20 @@ class NA(object):
 
         return self.score >= other.score
 
+    def get_stdseq_without_gaps(self):
+        """Removes gaps from self.stdseq and caches it"""
+        if self._cached_non_gaps_stdseq is None \
+                and self.stdseq is not None:
+            self._cached_non_gaps_stdseq = self.stdseq.replace(
+                    '-', '').upper()
+        return self._cached_non_gaps_stdseq
+
     def _is_valid_operand(self, other):
         """Check"""
 
         if isinstance(other, NA):
-            std = None if self.stdseq is None else self.stdseq.upper()
-            other_std = None if other.stdseq is None else other.stdseq.upper()
-            if other_std != std:
+            if other.get_stdseq_without_gaps() != \
+                    self.get_stdseq_without_gaps():
                 raise TypeError("unorderable when stdseqs are inconsistent.")
             return True
 

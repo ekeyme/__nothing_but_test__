@@ -70,7 +70,7 @@ class RoutineTest(unittest.TestCase):
 
         status = analyze(seq, stdseq)
         self.assertEqual(status, NA(gaps=1, stdseq=stdseq, aa_pm=0))
-        self.assertEqual(status.seq, seq.replace('-', ''))
+        self.assertEqual(status.seq, seq)
         self.assertEqual(status.stdseq, stdseq)
         self.assertEqual(status.gaps, 1)
         self.assertEqual(status.length, len(seq))

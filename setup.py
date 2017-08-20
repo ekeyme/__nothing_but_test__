@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="bio-pm",
-    version="0.1.0",
+    version="0.1.1",
     url="https://github.com/ekeyme/bio-pm",
 
     author="Ekeyme Mo",
@@ -21,6 +21,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
         "Operating System :: OS Independent",
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',

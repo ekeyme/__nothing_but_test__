@@ -62,11 +62,16 @@ class RoutineTest(unittest.TestCase):
         for status, str_status in input_pairs:
             self.assertEqual(str(status), str_status)
 
+    def test_pm_status_orderablity(self):
+        """pm.status should be orderable with gaps-removed but still consistent stdseq"""
+
+        self.assertTrue(PM(stdseq='ATGATT', nt_pm=1) > NA(stdseq='ATG-ATT', gaps=1, nt_pm=1))
+
 
 class ErrorTest(unittest.TestCase):
 
-    def test_raise_TypeError(self):
-        """status should raise TypeError when comparing between status operand with difference stdandar sequence"""
+    def test_raise_TypeError1(self):
+        """status should raise TypeError when comparing between status operand with incosistent stdseq"""
 
         with self.assertRaises(TypeError):
             Y(stdseq='atg') > Conserved(stdseq='tga', aa_pm=0) \

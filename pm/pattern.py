@@ -28,19 +28,6 @@ def parse(seq, stdseq, translate=False):
     
     Return PlainPattern object if translate is False(default), else 
     return an TranslatedPattern object.
-    
-    Both PlainPattern and TranslatedPattern object are iterators contains
-    the detail pattern dict.
-    
-    PlainPattern object is used for the sequence which do not need to be 
-    translate into protein. PlainPattern.mutants attribute stores the detail
-    pattern dict like {position: (variant_in_stdseq, variant_in_seq), ...}.
-
-    TranslatedPattern object is used for the sequenct which need to compare 
-    the variating on amino acid level. TranslatedPattern.mutants and 
-    TranslatedPattern.aa_mutants store the detail nuclei and amino pattern 
-    dict respectively, both in the style like 
-    {position: (variant_in_stdseq, variant_in_seq), ...}.
 
     Args:
     seq -- sequence
@@ -97,19 +84,6 @@ def _make_translate_mutants(seq, stdseq, nt_mutant):
     return (aa_mutant, nt_pos2aa_assoc_dict)
 
 
-def _is_stop_codon(codon):
-    '''Where is a codon stop codon?'''
-
-    if len(codon.strip()) != 3:
-        raise ValueError('codon must be triple')
-
-    codon = codon.upper()
-    if codon in ('TAA', 'TGA', 'TAG', 'UAA', 'UGA', 'UAG'):
-        return True
-    else:
-        return False
-
-
 def _translate_codon(codon):
     """used by _make_translate_mutants"""
 
@@ -164,7 +138,7 @@ class TranslatedPattern(object):
     """Translated mutation pattern data model
 
     Used for the sequenct which need to compare the variating on amino acid 
-    .level
+    level.
 
     Attributes:
     mutants -- original pattern dict betweenn the seq and its stdseq, e.g.
@@ -256,4 +230,4 @@ class PlainPattern(object):
         return self._list
 
 
-__all__ = (parse, TranslationError, )
+__all__ = [parse, mutant_to_str, ]

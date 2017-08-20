@@ -26,7 +26,7 @@ Or manually (assuming all required modules are installed on your system)::
 Requirements
 ^^^^^^^^^^^^
 
-* Python >= 3
+* Python >= 2.7
 * biopython
 
 Examples
@@ -38,7 +38,8 @@ Analyze point mutation status using ``pm.analyze(seq, stdseq, translate=True)``
 .. code-block:: python
 
     >>> import pm
-    >>> 
+    >>>
+    >>> stdseq = 'ATGGGCGC'
     >>> seq_with_gap = 'ATGGGCG-C'
     >>> pm.analyze(seq_with_gap, stdseq)
     <pm.status.NA object with: gaps=1, nt_pm=1, aa_pm=0, stdseq='ATGGGCGC'>
