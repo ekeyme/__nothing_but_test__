@@ -18,6 +18,9 @@ from .pattern import parse, TranslationError
 from .status import Y, Conserved, PM, NA
 
 
+__version__ = '0.1.1'
+
+
 def analyze(seq, stdseq, translate=True):
     """Analyze the PM between pairwised seq and stdseq.
 
