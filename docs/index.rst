@@ -9,85 +9,16 @@ bio-pm
    :target: https://travis-ci.org/ekeyme/bio-pm
    :alt: Latest Travis CI build status
 
+.. image:: https://readthedocs.org/projects/-nothing-but-test-/badge/?version=latest
+   :target: http://-nothing-but-test-.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 A point mutation analyzing tool for nucleotide sequence
 
 Version
 -------
 
-0.1.4
-
-Installation
-------------
-
-Install through pip::
-
-    pip install bio-pm
-
-Or manually (assuming all required modules are installed on your system)::
-
-    python ./setup.py install
-
-
-Requirements
-^^^^^^^^^^^^
-
-* Python >= 2.7
-* biopython
-
-Examples
---------
-
-Analyze point mutation status using ``pm.analyze(seq, stdseq, translate=True)``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-    >>> import pm
-    >>>
-    >>> stdseq = 'ATGGGCGC'
-    >>> seq_with_gap = 'ATGGGCG-C'
-    >>> pm.analyze(seq_with_gap, stdseq)
-    <pm.status.NA object with: gaps=1, nt_pm=1, aa_pm=0, stdseq='ATGGGCGC'>
-    >>> 
-
-Quickly compare between ``pm.status`` objects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-``pm.status`` objects with same stdseqs have their internal order. That is ``Y > Conserved >
-PM > NA``.
-
-.. code-block:: python
-
-    >>> import pm
-    >>>
-    >>> stdseq = "ATGGGCGCT"
-    >>> seq_without_pm = 'ATGGGCGCT'
-    >>> seq_conserved = "ATGGGCGCC"
-    >>> seq_with_pm = 'ATGGGCGAT'
-    >>> status_Y = pm.analyze(seq_without_pm, stdseq)
-    >>> status_Conserved = pm.analyze(seq_conserved, stdseq)
-    >>> status_PM = pm.analyze(seq_with_pm, stdseq)
-    >>>
-    >>> status_Y > status_Conserved > status_PM
-    True
-    >>>
-
-Help generate HGVS-like mutation format
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*Codes continues from* `Quickly compare between pm.status objects`_
-
-.. code-block:: python
-
-    >>> from pm.pattern import mutant_to_str
-    >>>
-    >>> status_PM.pattern
-    <pm.pattern.TranslatedPattern object at 0x2b03c9cfdc18>
-    >>>
-    >>> for nt_pm, aa_pm in status_PM.pattern.list():
-    ...     print(mutant_to_str(*nt_pm) + '|' + mutant_to_str(*aa_pm))
-    ...
-    8C>A|3A>D
+0.1.5-dev
 
 Licence
 -------
@@ -99,11 +30,22 @@ Authors
 
 `bio-pm` was written by `Ekeyme Mo <ekeyme@gmail.com>`_.
 
+Changelog
+---------
+
+0.1.1 (2017-08-20)
+^^^^^^^^^^^^^^^^^^
+
+- Remove ``pairwised_seq`` and ``pairwised_stdseq`` from ``pm.status``, and use ``seq`` and ``stdseq`` to replace them, respectively.
+
 
 
 .. toctree::
    :maxdepth: 1
    :caption: Table of Contents
+
+   install
+   examples
 
 
 Indices and tables
