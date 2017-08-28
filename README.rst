@@ -48,7 +48,7 @@ Analyze point mutation status using ``pm.analyze(seq, stdseq, translate=True)``
 Quickly compare between ``pm.status`` objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``p.status`` objects with same stdseqs have their internal order. That is ``Y > Conserved >
+``pm.status`` objects with same stdseqs have their internal order. That is ``Y > Conserved >
 PM > NA``.
 
 .. code-block:: python
@@ -70,7 +70,7 @@ PM > NA``.
 Help generate HGVS-like mutation format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*Codes continues from* ``Quickly compare the point mutation status objects``
+*Codes continues from* `Quickly compare between pm.status objects`_
 
 .. code-block:: python
 
