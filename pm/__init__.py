@@ -18,7 +18,7 @@ from .pattern import parse, TranslationError
 from .status import Y, Conserved, PM, NA
 
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 
 def analyze(seq, stdseq, translate=True):

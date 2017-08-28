@@ -11,6 +11,11 @@ bio-pm
 
 A point mutation analyzing tool for nucleotide sequence
 
+Version
+-------
+
+0.1.3
+
 Installation
 ------------
 

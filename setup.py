@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="bio-pm",
-    version="0.1.2",
+    version="0.1.3",
     url="https://github.com/ekeyme/bio-pm",
 
     author="Ekeyme Mo",
